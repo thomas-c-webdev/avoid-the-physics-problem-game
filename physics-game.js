@@ -102,6 +102,7 @@ const canvasSize =()=>{
     window.addEventListener('resize', () => {
     canvas().width = window.innerWidth/2
     canvas().height = window.innerHeight/2
+    draw().fillRect(xPos, canvas().height/2.5, 50, 50);
 })
 }
 
