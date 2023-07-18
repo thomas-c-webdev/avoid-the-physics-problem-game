@@ -32,13 +32,9 @@ article{
 #Next{
     display: none;
 }
-#anim{
+#canvas{
         padding: 0;
         margin: auto;
         display: block;
         width: 800px;
-
-    border: 1px;
-    border-style: dashed;
-    border-color: #000;
 }

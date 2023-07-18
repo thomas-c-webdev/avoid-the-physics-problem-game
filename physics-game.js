@@ -1,10 +1,74 @@
 window.onload = () =>{
-    question()
+  /* 
+  question()
     submitAnsw()
     canvasSize()
     initialCar()
+    */
+
+/*
+const canvas = ()=>{
+  const cv = document.getElementById('anim')   
+  return cv
+} 
+
+const draw = () =>{
+  const shape = canvas().getContext('2d')
+  return shape
+
+*/
+
+//global
+const canvas = document.getElementById("canvas")
+const ctx = canvas.getContext("2d")
+/*Note: In the polish phase, we'll need to make the canvas height and width more 
+adaptabl to window changes */
+canvas.width = window.innerWidth/2
+canvas.height = window.innerHeight/2
+
+class CanvasRects {
+  constructor(x, y, width, height, color){
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.color = color;
+  }
+  drawRec (){
+    ctx.fillStyle = this.color
+    ctx.fillRect(this.x, this.y, this.width, this.height)
+
+  }
+
+}
+let background = new CanvasRects(0, 0, canvas.width, canvas.height, "black")
+
+
+const shipY = canvas.height/7
+const shipWidth = canvas.width/4
+const shipHeight = canvas.height/2.2
+
+const ship1 = new CanvasRects(canvas.width/16, shipY, shipWidth, shipHeight, "white")
+const ship2 = new CanvasRects(canvas.width/2.7, shipY, shipWidth, shipHeight, "white")
+const ship3 = new CanvasRects(canvas.width/1.48, shipY, shipWidth, shipHeight, "white")
+const play = new CanvasRects(canvas.width/3, canvas.height-(canvas.height/3.2), canvas.width/3, canvas.height/3.4, "silver")
+
+const menuElements = [background, ship1, ship2, ship3, play]
+
+
+for(let i = 0; i < menuElements.length; i++){
+  menuElements[i].drawRec()
 }
 
+
+//let ship1 = new CanvasRects(canvas.width/15, canvas.height/7, canvas.width/4, canvas.height/2, "white")
+//background.drawRec()
+//ship1.drawRec()
+
+
+
+}
+/*
 const question =()=>{
    const ques = document.getElementById("question")
    ques.innerHTML = "A vehicle is traveling down the road with a mass of " + massNum(1500, 10000) + " kg and an acceleration of " + accelNum(1, 70) + " m/s^2. How much force is it moving with?" 
