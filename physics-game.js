@@ -26,6 +26,22 @@ adaptabl to window changes */
 canvas.width = window.innerWidth/2
 canvas.height = window.innerHeight/2
 
+class CanvasText {
+  constructor(text, xPos, yPos, color){
+    this.text = text;
+    this.xPos = xPos;
+    this.yPos = yPos;
+    this.color = color;
+  }
+  writeText(sizefont){
+    ctx.fillStyle = "white"
+    ctx.font = sizefont
+    ctx.fillText(this.text, this.xPos, this.yPos)
+  }
+}
+const playText = new CanvasText('Play', canvas.width/2.35, canvas.height/1.1, 'white')
+const authorText = new CanvasText('By Thomas Czernek', canvas.width/1.3, canvas.height/1.1, 'white')
+
 class CanvasRects {
   constructor(x, y, width, height, color){
     this.x = x;
@@ -44,6 +60,7 @@ class CanvasRects {
 let background = new CanvasRects(0, 0, canvas.width, canvas.height, "black")
 
 
+
 const shipY = canvas.height/7
 const shipWidth = canvas.width/4
 const shipHeight = canvas.height/2.2
@@ -60,7 +77,8 @@ for(let i = 0; i < menuElements.length; i++){
   menuElements[i].drawRec()
 }
 
-
+playText.writeText('50px Arial')
+authorText.writeText('15px Arial')
 //let ship1 = new CanvasRects(canvas.width/15, canvas.height/7, canvas.width/4, canvas.height/2, "white")
 //background.drawRec()
 //ship1.drawRec()
