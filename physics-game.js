@@ -21,10 +21,50 @@ const draw = () =>{
 //global
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
+
+let shipSetting =''
+let playing = false
+let mouseX, mouseY
+
+function getMousePos(canvas, evt) {
+  var rect = canvas.getBoundingClientRect();
+  return {
+    x: evt.clientX - rect.left,
+    y: evt.clientY - rect.top
+  };
+}
+
+  canvas.addEventListener('click', function(evt){
+    let mousePos = getMousePos(canvas, evt)
+   mouseX = mousePos.x
+   mouseY = mousePos.y
+   } )
+
+
+
+/*
+canvas.addEventListener('mousemove', function(evt) {
+  var mousePos = getMousePos(canvas, evt);
+  console.log('Mouse position: ' + mousePos.x + ',' + mousePos.y);
+}, false);
+*/
+
+
+
+/*
+canvas.addEventListener('click', function(evt) {
+  return mousePos = (getMousePos(canvas, evt))
+
+})
+*/
+
+
+
+
 /*Note: In the polish phase, we'll need to make the canvas height and width more 
 adaptabl to window changes */
-canvas.width = window.innerWidth/2
-canvas.height = window.innerHeight/2
+canvas.width = window.innerWidth/1.5
+canvas.height = window.innerHeight/1.5 //When we want to make this reponsize, we'll come back here.
 
 class CanvasText {
   constructor(text, xPos, yPos, color){
@@ -39,46 +79,165 @@ class CanvasText {
     ctx.fillText(this.text, this.xPos, this.yPos)
   }
 }
-const playText = new CanvasText('Play', canvas.width/2.35, canvas.height/1.1, 'white')
+const playText = new CanvasText('Play', canvas.width/2.30, canvas.height/1.1, 'white')
 const authorText = new CanvasText('By Thomas Czernek', canvas.width/1.3, canvas.height/1.1, 'white')
 
 class CanvasRects {
-  constructor(x, y, width, height, color){
+  constructor(x, y, width, height, color, setting){
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.color = color;
+    this.setting = setting;
   }
   drawRec (){
     ctx.fillStyle = this.color
     ctx.fillRect(this.x, this.y, this.width, this.height)
+  }
+  clickHomeRects (objs, set){
+    
+    canvas.addEventListener('click', function(evt) {
+      let mousePos = (getMousePos(canvas, evt))
+    
+      if (mouseX >= objs[set].x && mouseX <=  (objs[set].x + objs[set].width )){
+        if (mouseY >= objs[set].y && mouseY <= (objs[set].y + objs[set].height)) {
+         
+          for(let i = 0; i < objs.length; i++){
+            ctx.fillStyle = 'white'
+            ctx.fillRect(objs[i].x, objs[i].y, objs[i].width, objs[i].height)
+          }
+          ctx.fillStyle = 'red'
+          ctx.fillRect(objs[set].x, objs[set].y, objs[set].width, objs[set].height) 
+        shipSetting = objs[set].setting
 
+          alienShip.drawShip()
+          humanShip.drawShip()
+          triShip.drawShip()
+       }
+      }
+    });
+  }
+  playButton(play){
+
+    if(playing){
+      return
+    }
+
+      if (mouseX >= play.x && mouseX <=  (play.x + play.width )){
+        if (mouseY >= play.y && mouseY <= (play.y + play.height)) {
+          
+
+          
+          playing = true
+
+
+          gamePlay()
+
+        }
+      }
   }
 
 }
 let background = new CanvasRects(0, 0, canvas.width, canvas.height, "black")
 
 
+const rectY = canvas.height/7
+const rectWidth = canvas.width/4
+const rectHeight = canvas.height/2.2
 
-const shipY = canvas.height/7
-const shipWidth = canvas.width/4
-const shipHeight = canvas.height/2.2
+const square1 = new CanvasRects(38, rectY, rectWidth, rectHeight, "white", 'ship-1')
+const square2 = new CanvasRects(canvas.width/2.7, rectY, rectWidth, rectHeight, "white", 'ship-2')
+const square3 = new CanvasRects(canvas.width/1.48, rectY, rectWidth, rectHeight, "white", 'ship-3')
+const playSquare = new CanvasRects(canvas.width/3, canvas.height-(canvas.height/3.2), canvas.width/3, canvas.height/3.4, "silver")
 
-const ship1 = new CanvasRects(canvas.width/16, shipY, shipWidth, shipHeight, "white")
-const ship2 = new CanvasRects(canvas.width/2.7, shipY, shipWidth, shipHeight, "white")
-const ship3 = new CanvasRects(canvas.width/1.48, shipY, shipWidth, shipHeight, "white")
-const play = new CanvasRects(canvas.width/3, canvas.height-(canvas.height/3.2), canvas.width/3, canvas.height/3.4, "silver")
-
-const menuElements = [background, ship1, ship2, ship3, play]
-
+const menuElements = [background, playSquare, square1, square2, square3]
+const shipChoice = [square1, square2, square3]
 
 for(let i = 0; i < menuElements.length; i++){
   menuElements[i].drawRec()
 }
 
-playText.writeText('50px Arial')
+
+shipChoice.forEach(function(element){
+	element.clickHomeRects(shipChoice, shipChoice.indexOf(element));
+});
+
 authorText.writeText('15px Arial')
+playText.writeText('70px Arial')
+
+class Images {
+  constructor(shipId, imgX, imgY, imgWidth, imgHeight){
+    this.shipId = shipId;
+    this.imgX = imgX;
+    this.imgY = imgY;
+    this.imgWidth = imgWidth;
+    this.imgHeight = imgHeight;
+  }
+  drawShip(){
+  let ship = document.getElementById(this.shipId)
+  ctx.drawImage(ship, this.imgX, this.imgY, this.imgWidth, this.imgHeight)
+
+  }
+}
+
+
+const alienShip = new Images('ship-1',  -25, canvas.height/20, 350, 350)
+const humanShip = new Images('ship-2', canvas.width/3.4, 10, 350, 350)
+const triShip = new Images('ship-3', canvas.width/1.67, -10, 350, 350)
+
+
+alienShip.drawShip()
+humanShip.drawShip()
+triShip.drawShip()
+
+canvas.addEventListener('click', function(){
+  playSquare.playButton(playSquare)
+}
+)
+
+
+const gamePlay = () => {
+  animate()
+  //clearHome()
+  //drawPlayer()
+}
+
+const clearHome =()=>{
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  background.drawRec()
+
+
+}
+
+const drawPlayer =()=>{
+  const playerShip = new Images(shipSetting,  canvas.width/2, canvas.height/2, 350, 350)
+ 
+ 
+  playerShip.drawShip()
+ 
+}
+
+
+const animate = () =>{
+
+    clearHome()
+    drawPlayer()
+  requestAnimationFrame(animate);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 //let ship1 = new CanvasRects(canvas.width/15, canvas.height/7, canvas.width/4, canvas.height/2, "white")
 //background.drawRec()
 //ship1.drawRec()

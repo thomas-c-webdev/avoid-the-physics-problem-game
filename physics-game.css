@@ -19,6 +19,12 @@ article{
     line-height: 2;
 }
 
+.format {
+    width: 65%;
+    margin:auto;
+    line-height: 2;
+}
+
 .hover:hover{
     color:black;
     text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
@@ -29,6 +35,15 @@ article{
     display:none;
 
 }
+#ship-1{
+    display:none;
+}
+#ship-2{
+    display:none;
+}
+#ship-3{
+    display:none;
+}
 #Next{
     display: none;
 }
@@ -36,5 +51,5 @@ article{
         padding: 0;
         margin: auto;
         display: block;
-        width: 800px;
+
 }
