@@ -265,7 +265,7 @@ const drawPlayer =()=>{
 }
 
 const score =()=>{
-  const scoreText = new CanvasText('Score: 24 ', canvas.width/1.2, canvas.height/1.1, 'white')
+  const scoreText = new CanvasText('Score: 0 ', canvas.width/1.2, canvas.height/1.1, 'white')
   scoreText.writeText('20px Arial')
 }
 
