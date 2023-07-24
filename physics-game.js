@@ -280,7 +280,7 @@ const restart =()=>{
 }
 
 
-//Note we may draw the meteors as a function, but then rewrite it later as a sub-class to replicate them
+//Note we may draw the meteors as a function, but then rewrite it later as a sub-class to replicate them on score increments
 
 
 
