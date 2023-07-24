@@ -96,8 +96,16 @@ class CanvasRects {
     ctx.fillRect(this.x, this.y, this.width, this.height)
   }
   clickHomeRects (objs, set){
-    
+    if(playing){
+      return
+    }
+
+
     canvas.addEventListener('click', function(evt) {
+
+      if(playing){
+        return
+      }
       let mousePos = (getMousePos(canvas, evt))
     
       if (mouseX >= objs[set].x && mouseX <=  (objs[set].x + objs[set].width )){
@@ -117,6 +125,34 @@ class CanvasRects {
        }
       }
     });
+  }
+    restartRect(button){
+
+      canvas.addEventListener('click', function() {
+      
+        if (mouseX >= button.x && mouseX <=  (button.x + button.width )){
+          if (mouseY >= button.y && mouseY <= (button.y + button.height)) {
+            //will need to clear the animation here once we get to that
+
+            if(playing === false){
+              return
+            }
+          
+            clearHome()
+            allRecs()
+            
+            authorText.writeText('15px Arial')
+            playText.writeText('70px Arial')
+            drawShips()
+          
+            playing = false
+
+
+
+          }
+        }
+
+    })
   }
   playButton(play){
 
@@ -139,7 +175,7 @@ class CanvasRects {
   }
 
 }
-let background = new CanvasRects(0, 0, canvas.width, canvas.height, "black")
+const background = new CanvasRects(0, 0, canvas.width, canvas.height, "black")
 
 
 const rectY = canvas.height/7
@@ -154,14 +190,20 @@ const playSquare = new CanvasRects(canvas.width/3, canvas.height-(canvas.height/
 const menuElements = [background, playSquare, square1, square2, square3]
 const shipChoice = [square1, square2, square3]
 
+const allRecs =()=>{
 for(let i = 0; i < menuElements.length; i++){
   menuElements[i].drawRec()
+  }
 }
+allRecs()
+
 
 
 shipChoice.forEach(function(element){
 	element.clickHomeRects(shipChoice, shipChoice.indexOf(element));
 });
+
+
 
 authorText.writeText('15px Arial')
 playText.writeText('70px Arial')
@@ -186,10 +228,12 @@ const alienShip = new Images('ship-1',  -25, canvas.height/20, 350, 350)
 const humanShip = new Images('ship-2', canvas.width/3.4, 10, 350, 350)
 const triShip = new Images('ship-3', canvas.width/1.67, -10, 350, 350)
 
-
+const drawShips = ()=>{
 alienShip.drawShip()
 humanShip.drawShip()
 triShip.drawShip()
+}
+drawShips()
 
 canvas.addEventListener('click', function(){
   playSquare.playButton(playSquare)
@@ -197,11 +241,16 @@ canvas.addEventListener('click', function(){
 )
 
 
+//Start of the actual gamplay
+
+
 const gamePlay = () => {
   animate()
   //clearHome()
   //drawPlayer()
 }
+
+
 
 const clearHome =()=>{
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -211,19 +260,35 @@ const clearHome =()=>{
 }
 
 const drawPlayer =()=>{
-  const playerShip = new Images(shipSetting,  canvas.width/2, canvas.height/2, 350, 350)
- 
- 
+  const playerShip = new Images(shipSetting,  canvas.width/3.3, canvas.height/3, 350, 350)
   playerShip.drawShip()
- 
 }
+
+const score =()=>{
+  const scoreText = new CanvasText('Score: 24 ', canvas.width/1.2, canvas.height/1.1, 'white')
+  scoreText.writeText('20px Arial')
+}
+
+const restart =()=>{
+  const homeRect = new CanvasRects(20, canvas.height/1.2, canvas.width/11, canvas.height/8, "grey")
+ homeRect.drawRec()
+ homeRect.restartRect(homeRect)
+
+ const homeText = new CanvasText('Home', 30, canvas.height/1.1, 'white')
+ homeText.writeText('20px Arial')
+
+}
+
+
 
 
 const animate = () =>{
 
     clearHome()
     drawPlayer()
-  requestAnimationFrame(animate);
+    score()
+    restart()
+ // requestAnimationFrame(animate);
 }
 
 
