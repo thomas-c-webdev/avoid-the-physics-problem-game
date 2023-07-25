@@ -255,13 +255,37 @@ const gamePlay = () => {
 const clearHome =()=>{
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   background.drawRec()
-
-
 }
 
+
+
+class Player extends Images {
+  constructor(shipId, imgX, imgY, imgWidth, imgHeight){
+  super(shipId, imgX, imgY, imgWidth, imgHeight)
+
+/*
+super() specifies which properties from our constructor we're inheriting. They're already
+inherited, but with super we could overwrite them or use them in our methods and in if/how
+we deterine new properties for this subclass
+
+We don't really need super() for the player class, but we'll likely need it later on.
+This was something new we learned.
+*/
+
+  }
+  moveLeft(){
+ //   canvas.addEventListener()
+
+    //console.log('tessttt')
+  }
+}
+
+
 const drawPlayer =()=>{
-  const playerShip = new Images(shipSetting,  canvas.width/3.3, canvas.height/3, 350, 350)
+  const playerShip = new Player(shipSetting,  canvas.width/3.3, canvas.height/3, 350, 350)
+  playerShip.imgX = playerShip.imgX + 50
   playerShip.drawShip()
+  playerShip.moveLeft()
 }
 
 const score =()=>{
@@ -276,16 +300,20 @@ const restart =()=>{
 
  const homeText = new CanvasText('Home', 30, canvas.height/1.1, 'white')
  homeText.writeText('20px Arial')
-
 }
 
 
+const makeMeteor = ()=>{
+  const meteor1 = new Images('meteor-1', canvas.width/12, canvas.height/12, 300, 300)
+  const meteor2 = new Images('meteor-2', canvas.width/1.5, canvas.height/12, 300, 300)
+  const meteor3 = new Images('meteor-3', canvas.width/1.5, canvas.height/2, 150, 150)
+  meteor1.drawShip()
+  meteor2.drawShip()
+  meteor3.drawShip()
+
+  console.log('hello')
+}
 //Note we may draw the meteors as a function, but then rewrite it later as a sub-class to replicate them on score increments
-
-
-
-
-
 
 
 
@@ -296,7 +324,8 @@ const animate = () =>{
     drawPlayer()
     score()
     restart()
- // requestAnimationFrame(animate);
+    makeMeteor()
+ requestAnimationFrame(animate);
 }
 
 

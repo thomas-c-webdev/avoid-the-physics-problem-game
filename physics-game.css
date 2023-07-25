@@ -35,15 +35,14 @@ article{
     display:none;
 
 }
-#ship-1{
+.hide{
     display:none;
 }
-#ship-2{
-    display:none;
-}
-#ship-3{
-    display:none;
-}
+
+
+
+
+
 #Next{
     display: none;
 }
