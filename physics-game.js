@@ -128,37 +128,33 @@ class CanvasRects {
   }
     restartRect(button){
 
-      canvas.addEventListener('click', function() {
+  /*    canvas.addEventListener('click', function() {
       
         if (mouseX >= button.x && mouseX <=  (button.x + button.width )){
           if (mouseY >= button.y && mouseY <= (button.y + button.height)) {
             //will need to clear the animation here once we get to that
 
-          //  alert('llll')
-cancelAnimationFrame(animate);
-            if(playing === false){
-              return
-            }
+
+            cancelAnimationFrame(animationId);
             
-
-          
-
             clearHome()
             allRecs()
 
-            
             authorText.writeText('15px Arial')
             playText.writeText('70px Arial')
             drawShips()
-          
+
+           
+            if(playing === false){
+              return
+            }
+
             playing = false
-
-
 
           }
         }
 
-    })
+    })*/
   }
   playButton(play){
 
@@ -251,12 +247,15 @@ canvas.addEventListener('click', function(){
 
 
 //Start of the actual gamplay
+let animationId
 
 
+
+let test = 0
 const gamePlay = () => {
+setInterval(function () {test += 1}, 1000);
   animate()
-  //clearHome()
-  //drawPlayer()
+
 }
 
 
@@ -279,8 +278,8 @@ class Player extends Images {
   
 }
 
-let x = 0
-let y = 0
+let x = 250
+let y = 50
 
 const user =()=>{
   const playerShip = new Player(shipSetting, x, y, 350, 350)
@@ -312,18 +311,21 @@ canvas.addEventListener('keydown', (event) => {
 });
 
 
+
+
 const score =()=>{
-  const scoreText = new CanvasText('Score: 0 ', canvas.width/1.2, canvas.height/1.1, 'white')
+  const scoreText = new CanvasText('Score: ' + test, canvas.width/1.2, canvas.height/1.1, 'white')
   scoreText.writeText('20px Arial')
 }
 
 const restart =()=>{
   const homeRect = new CanvasRects(20, canvas.height/1.2, canvas.width/11, canvas.height/8, "grey")
- //homeRect.drawRec()
+ homeRect.drawRec()
  homeRect.restartRect(homeRect)
 
  const homeText = new CanvasText('Home', 30, canvas.height/1.1, 'white')
  homeText.writeText('20px Arial')
+ return homeRect
 }
 
 
@@ -348,12 +350,41 @@ const animate = () =>{
     score()
     restart()
     makeMeteor()
- requestAnimationFrame(animate);
+ animationID = requestAnimationFrame(animate);
 }
 
 
 
 
+
+
+canvas.addEventListener('click', function() {
+      
+  if (mouseX >= restart.x && mouseX <=  (restart.x + restart.width )){
+    if (mouseY >= restart.y && mouseY <= (restart.y + restart.height)) {
+      //will need to clear the animation here once we get to that
+
+
+      cancelAnimationFrame(animationId);
+      
+      clearHome()
+      allRecs()
+
+      authorText.writeText('15px Arial')
+      playText.writeText('70px Arial')
+      drawShips()
+
+     
+      if(playing === false){
+        return
+      }
+
+      playing = false
+
+    }
+  }
+
+})
 
 
 
