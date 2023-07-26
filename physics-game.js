@@ -22,7 +22,7 @@ const draw = () =>{
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
 
-let shipSetting ='ship-2'
+let shipSetting =''
 let playing = false
 let mouseX, mouseY
 
@@ -106,7 +106,6 @@ class CanvasRects {
       if(playing){
         return
       }
-      let mousePos = (getMousePos(canvas, evt))
     
       if (mouseX >= objs[set].x && mouseX <=  (objs[set].x + objs[set].width )){
         if (mouseY >= objs[set].y && mouseY <= (objs[set].y + objs[set].height)) {
@@ -117,7 +116,8 @@ class CanvasRects {
           }
           ctx.fillStyle = 'red'
           ctx.fillRect(objs[set].x, objs[set].y, objs[set].width, objs[set].height) 
-        shipSetting = objs[set].setting
+  
+          shipSetting = objs[set].setting
 
           alienShip.drawShip()
           humanShip.drawShip()
@@ -134,12 +134,18 @@ class CanvasRects {
           if (mouseY >= button.y && mouseY <= (button.y + button.height)) {
             //will need to clear the animation here once we get to that
 
+          //  alert('llll')
+cancelAnimationFrame(animate);
             if(playing === false){
               return
             }
+            
+
           
+
             clearHome()
             allRecs()
+
             
             authorText.writeText('15px Arial')
             playText.writeText('70px Arial')
@@ -183,7 +189,7 @@ const rectWidth = canvas.width/4
 const rectHeight = canvas.height/2.2
 
 const square1 = new CanvasRects(38, rectY, rectWidth, rectHeight, "white", 'ship-1')
-const square2 = new CanvasRects(canvas.width/2.7, rectY, rectWidth, rectHeight, "red", 'ship-2')
+const square2 = new CanvasRects(canvas.width/2.7, rectY, rectWidth, rectHeight, "white", 'ship-2')
 const square3 = new CanvasRects(canvas.width/1.48, rectY, rectWidth, rectHeight, "white", 'ship-3')
 const playSquare = new CanvasRects(canvas.width/3, canvas.height-(canvas.height/3.2), canvas.width/3, canvas.height/3.4, "silver")
 
@@ -235,6 +241,9 @@ triShip.drawShip()
 }
 drawShips()
 
+
+
+
 canvas.addEventListener('click', function(){
   playSquare.playButton(playSquare)
 }
@@ -270,17 +279,19 @@ class Player extends Images {
   
 }
 
-
-
 let x = 0
 let y = 0
-const playerShip = new Player(shipSetting, x, y, 350, 350);
+
+const user =()=>{
+  const playerShip = new Player(shipSetting, x, y, 350, 350)
+  return playerShip
+}  
 
 const drawPlayer = () => {
 
-  playerShip.imgX = x
-  playerShip.imgY = y
-  playerShip.drawShip()
+  user().imgX = x
+  user().imgY = y
+  user().drawShip()
 
 };
 
@@ -308,7 +319,7 @@ const score =()=>{
 
 const restart =()=>{
   const homeRect = new CanvasRects(20, canvas.height/1.2, canvas.width/11, canvas.height/8, "grey")
- homeRect.drawRec()
+ //homeRect.drawRec()
  homeRect.restartRect(homeRect)
 
  const homeText = new CanvasText('Home', 30, canvas.height/1.1, 'white')
