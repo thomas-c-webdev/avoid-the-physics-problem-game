@@ -22,7 +22,7 @@ const draw = () =>{
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
 
-let shipSetting =''
+let shipSetting ='ship-2'
 let playing = false
 let mouseX, mouseY
 
@@ -183,7 +183,7 @@ const rectWidth = canvas.width/4
 const rectHeight = canvas.height/2.2
 
 const square1 = new CanvasRects(38, rectY, rectWidth, rectHeight, "white", 'ship-1')
-const square2 = new CanvasRects(canvas.width/2.7, rectY, rectWidth, rectHeight, "white", 'ship-2')
+const square2 = new CanvasRects(canvas.width/2.7, rectY, rectWidth, rectHeight, "red", 'ship-2')
 const square3 = new CanvasRects(canvas.width/1.48, rectY, rectWidth, rectHeight, "white", 'ship-3')
 const playSquare = new CanvasRects(canvas.width/3, canvas.height-(canvas.height/3.2), canvas.width/3, canvas.height/3.4, "silver")
 
@@ -261,32 +261,45 @@ const clearHome =()=>{
 
 class Player extends Images {
   constructor(shipId, imgX, imgY, imgWidth, imgHeight){
+
   super(shipId, imgX, imgY, imgWidth, imgHeight)
 
-/*
-super() specifies which properties from our constructor we're inheriting. They're already
-inherited, but with super we could overwrite them or use them in our methods and in if/how
-we deterine new properties for this subclass
-
-We don't really need super() for the player class, but we'll likely need it later on.
-This was something new we learned.
-*/
+ 
 
   }
-  moveLeft(){
- //   canvas.addEventListener()
-
-    //console.log('tessttt')
-  }
+  
 }
 
 
-const drawPlayer =()=>{
-  const playerShip = new Player(shipSetting,  canvas.width/3.3, canvas.height/3, 350, 350)
-  playerShip.imgX = playerShip.imgX + 50
+
+let x = 0
+let y = 0
+const playerShip = new Player(shipSetting, x, y, 350, 350);
+
+const drawPlayer = () => {
+
+  playerShip.imgX = x
+  playerShip.imgY = y
   playerShip.drawShip()
-  playerShip.moveLeft()
-}
+
+};
+
+// Register the keydown event listener outside the drawPlayer function
+canvas.addEventListener('keydown', (event) => {
+  if (event.key === 'ArrowLeft') {
+    x -= 2
+  } else if (event.key === 'ArrowRight') {
+    x += 2
+  } else if (event.key === 'ArrowUp'){
+    y -= 2
+    event.preventDefault();
+  } else if (event.key === 'ArrowDown'){
+    y += 2
+    event.preventDefault();
+  }
+
+});
+
 
 const score =()=>{
   const scoreText = new CanvasText('Score: 0 ', canvas.width/1.2, canvas.height/1.1, 'white')
@@ -311,7 +324,6 @@ const makeMeteor = ()=>{
   meteor2.drawShip()
   meteor3.drawShip()
 
-  console.log('hello')
 }
 //Note we may draw the meteors as a function, but then rewrite it later as a sub-class to replicate them on score increments
 
